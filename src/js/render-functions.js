@@ -7,43 +7,7 @@ import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
 // Додатковий імпорт стилів
 import 'simplelightbox/dist/simple-lightbox.min.css';
-
-const form = document.querySelector('.form');
-const loader = document.querySelector('#loader');
-console.log(loader);
-function showLoader() {
-  loader.classList.remove('hidden');
-}
-function hideLoader() {
-  loader.classList.add('hidden');
-}
-form.addEventListener('submit', searchSubmit);
-function clearGallery() {
-  gallery.innerHTML = '';
-}
-function searchSubmit(e) {
-  e.preventDefault();
-  showLoader();
-  clearGallery();
-  const searchedWord = form.elements['search-text'].value.trim();
-  console.log(searchedWord);
-  getImagesByQuery(searchedWord)
-    .then(({ data: { hits } }) => {
-      if (hits.length === 0) {
-        return iziToast.show({
-          message:
-            '❌ Sorry, there are no images matching your search query. Please try again!',
-          backgroundColor: 'red',
-          position: 'topRight',
-        });
-      }
-      createGallery(hits);
-    })
-    .catch(er => console.log(er))
-    .finally(() => {
-      hideLoader();
-    });
-}
+let searchedWord = 'dog';
 const myKey = '50870264-4cff09f0574465c81a14bcda1';
 const baseUrl = 'https://pixabay.com/api/';
 const gallery = document.querySelector('.gallery');
@@ -75,19 +39,20 @@ function createGallery(images) {
     <img
       class="gallery-image"
       src="${webformatURL}"
+      data-source="${largeImageURL}"
       alt="${tags}"
     />
   </a>
   <ul>
-  <li>likes<br>${likes}</li>
-  <li>views<br>${views}</li>
-  <li>comments<br>${comments}</li>
-  <li>downloads<br>${downloads}</li>
+  <li>likes ${likes}</li>
+  <li>views ${views}</li>
+  <li>comments ${comments}</li>
+  <li>downloads ${downloads}</li>
   </ul>
 </li>`
     )
     .join('');
-  gallery.insertAdjacentHTML('beforeend', markUp);
+  gallery.innerHTML = markUp;
   const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
     captionPosition: 'bottom',
@@ -97,4 +62,9 @@ function createGallery(images) {
   lightbox.refresh();
 }
 
-console.log(loader);
+getImagesByQuery(searchedWord)
+  .then(({ data: { hits } }) => {
+    createGallery(hits);
+  })
+
+  .catch(er => console.log(er));
