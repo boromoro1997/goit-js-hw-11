@@ -2,25 +2,16 @@
 import iziToast from 'izitoast';
 // Додатковий імпорт стилів
 import 'izitoast/dist/css/iziToast.min.css';
-import axios from 'axios';
-// Описаний у документації
-import SimpleLightbox from 'simplelightbox';
-// Додатковий імпорт стилів
-import 'simplelightbox/dist/simple-lightbox.min.css';
+import { getImagesByQuery } from './js/pixabay-api';
+import {
+  createGallery,
+  clearGallery,
+  showLoader,
+  hideLoader,
+} from './js/render-functions';
 
 const form = document.querySelector('.form');
-const loader = document.querySelector('#loader');
-console.log(loader);
-function showLoader() {
-  loader.classList.remove('hidden');
-}
-function hideLoader() {
-  loader.classList.add('hidden');
-}
 form.addEventListener('submit', searchSubmit);
-function clearGallery() {
-  gallery.innerHTML = '';
-}
 function searchSubmit(e) {
   e.preventDefault();
   showLoader();
@@ -44,57 +35,3 @@ function searchSubmit(e) {
       hideLoader();
     });
 }
-const myKey = '50870264-4cff09f0574465c81a14bcda1';
-const baseUrl = 'https://pixabay.com/api/';
-const gallery = document.querySelector('.gallery');
-function getImagesByQuery(query) {
-  const params = {
-    key: myKey,
-    q: query,
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: true,
-    lang: 'en',
-  };
-
-  return axios(baseUrl, { params });
-}
-function createGallery(images) {
-  const markUp = images
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => `<li class="gallery-item">
-  <a class="gallery-link" href="${largeImageURL}">
-    <img
-      class="gallery-image"
-      src="${webformatURL}"
-      alt="${tags}"
-    />
-  </a>
-  <ul>
-  <li>likes<br>${likes}</li>
-  <li>views<br>${views}</li>
-  <li>comments<br>${comments}</li>
-  <li>downloads<br>${downloads}</li>
-  </ul>
-</li>`
-    )
-    .join('');
-  gallery.insertAdjacentHTML('beforeend', markUp);
-  const lightbox = new SimpleLightbox('.gallery a', {
-    captionsData: 'alt',
-    captionPosition: 'bottom',
-    captionDelay: 250,
-  });
-
-  lightbox.refresh();
-}
-
-console.log(loader);

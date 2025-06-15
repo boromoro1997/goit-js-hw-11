@@ -26,16 +26,16 @@
   gap: 8px;
   margin: 36px auto;
 }
-
+.form input[type='text']{
+  width: 272px;
+}
 .form input[type='text'],
 .form button {
   height: 40px;
-  /* одинаковая высота */
   font-size: 16px;
   padding: 0 12px;
-  /* убираем vertical padding, только горизонтальный */
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
   box-sizing: border-box;
 }
 
@@ -44,14 +44,14 @@
 }
 
 .form button {
-  background-color: #007bff;
+  background-color: #4E75FF;
   color: white;
   border: none;
   cursor: pointer;
 }
 
 .form button:hover {
-  background-color: #0056b3;
+  background-color: #6C8CFF;
 }
 .gallery {
   display: flex;
@@ -76,7 +76,6 @@
 .gallery-link {
   display: block;
   height: 152px;
-  /* 200 - 48 */
   overflow: hidden;
 }
 
@@ -86,8 +85,6 @@
   object-fit: cover;
   display: block;
 }
-
-/* Блок с подписями */
 .gallery-item>ul {
   display: flex;
   justify-content: space-around;
@@ -99,93 +96,68 @@
   background-color: #f7f7f7;
   font-size: 12px;
 }
-
-/* Каждый текстовый блок */
 .gallery-item>ul>li {
   display: flex;
   flex-direction: column;
   align-items: center;
   line-height: 1.2;
 }
+.spanText{
+  font-weight: bold;
+  font-size: 12px;
+}
 
 .gallery-item>ul>li::first-line {
   font-weight: bold;
 }
-
-
-
+#loader {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
 .loader {
-  animation: rotate 1s infinite;
+  position: relative;
+  width:85px;
   height: 50px;
-  width: 50px;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(#e60000 50px, transparent 0),
+    linear-gradient(#e60000 50px, transparent 0),
+    linear-gradient(#e60000 50px, transparent 0),
+    linear-gradient(#e60000 50px, transparent 0),
+    linear-gradient(#e60000 50px, transparent 0),
+    linear-gradient(#e60000 50px, transparent 0);
+  background-position: 0px center, 15px center, 30px center, 45px center, 60px center, 75px center, 90px center;
+  animation: rikSpikeRoll 0.65s linear infinite alternate;
 }
 
-.loader:before,
-.loader:after {
-  border-radius: 50%;
-  content: "";
-  display: block;
-  height: 200px;
-  width: 200px;
-}
-
-.loader:before {
-  animation: ball1 1s infinite;
-  background-color: #fff;
-  box-shadow: 30px 0 0 #ff3d00;
-  margin-bottom: 10px;
-}
-
-.loader:after {
-  animation: ball2 1s infinite;
-  background-color: #ff3d00;
-  box-shadow: 30px 0 0 #fff;
-}
-
-@keyframes rotate {
+@keyframes rikSpikeRoll {
   0% {
-    transform: rotate(0deg) scale(0.8)
+    background-size: 10px 3px;
+  }
+
+  16% {
+    background-size: 10px 50px, 10px 3px, 10px 3px, 10px 3px, 10px 3px, 10px 3px
+  }
+
+  33% {
+    background-size: 10px 30px, 10px 50px, 10px 3px, 10px 3px, 10px 3px, 10px 3px
   }
 
   50% {
-    transform: rotate(360deg) scale(1.2)
+    background-size: 10px 10px, 10px 30px, 10px 50px, 10px 3px, 10px 3px, 10px 3px
+  }
+
+  66% {
+    background-size: 10px 3px, 10px 10px, 10px 30px, 10px 50px, 10px 3px, 10px 3px
+  }
+
+  83% {
+    background-size: 10px 3px, 10px 3px, 10px 10px, 10px 30px, 10px 50px, 10px 3px
   }
 
   100% {
-    transform: rotate(720deg) scale(0.8)
-  }
-}
-
-@keyframes ball1 {
-  0% {
-    box-shadow: 30px 0 0 #ff3d00;
-  }
-
-  50% {
-    box-shadow: 0 0 0 #ff3d00;
-    margin-bottom: 0;
-    transform: translate(15px, 15px);
-  }
-
-  100% {
-    box-shadow: 30px 0 0 #ff3d00;
-    margin-bottom: 10px;
-  }
-}
-
-@keyframes ball2 {
-  0% {
-    box-shadow: 30px 0 0 #fff;
-  }
-
-  50% {
-    box-shadow: 0 0 0 #fff;
-    margin-top: -20px;
-    transform: translate(15px, 15px);
-  }
-
-  100% {
-    box-shadow: 30px 0 0 #fff;
-    margin-top: 0;
+    background-size: 10px 3px, 10px 3px, 10px 3px, 10px 10px, 10px 30px, 10px 50px
   }
 }

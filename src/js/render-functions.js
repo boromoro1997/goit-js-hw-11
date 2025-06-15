@@ -1,29 +1,19 @@
 // Описаний у документації
-import iziToast from 'izitoast';
-// Додатковий імпорт стилів
-import 'izitoast/dist/css/iziToast.min.css';
-import axios from 'axios';
-// Описаний у документації
 import SimpleLightbox from 'simplelightbox';
 // Додатковий імпорт стилів
 import 'simplelightbox/dist/simple-lightbox.min.css';
-let searchedWord = 'dog';
-const myKey = '50870264-4cff09f0574465c81a14bcda1';
-const baseUrl = 'https://pixabay.com/api/';
-const gallery = document.querySelector('.gallery');
-function getImagesByQuery(query) {
-  const params = {
-    key: myKey,
-    q: query,
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: true,
-    lang: 'en',
-  };
-
-  return axios(baseUrl, { params });
+const loader = document.querySelector('#loader');
+export function showLoader() {
+  loader.classList.remove('hidden');
 }
-function createGallery(images) {
+export function hideLoader() {
+  loader.classList.add('hidden');
+}
+export function clearGallery() {
+  gallery.innerHTML = '';
+}
+const gallery = document.querySelector('.gallery');
+export function createGallery(images) {
   const markUp = images
     .map(
       ({
@@ -39,20 +29,19 @@ function createGallery(images) {
     <img
       class="gallery-image"
       src="${webformatURL}"
-      data-source="${largeImageURL}"
       alt="${tags}"
     />
   </a>
   <ul>
-  <li>likes ${likes}</li>
-  <li>views ${views}</li>
-  <li>comments ${comments}</li>
-  <li>downloads ${downloads}</li>
+  <li><span class="spanText">Likes</span><br>${likes}</li>
+  <li><span class="spanText">Views</span><br>${views}</li>
+  <li><span class="spanText">Comments</span><br>${comments}</li>
+  <li><span class="spanText">Downloads</span><br>${downloads}</li>
   </ul>
 </li>`
     )
     .join('');
-  gallery.innerHTML = markUp;
+  gallery.insertAdjacentHTML('beforeend', markUp);
   const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
     captionPosition: 'bottom',
@@ -61,10 +50,3 @@ function createGallery(images) {
 
   lightbox.refresh();
 }
-
-getImagesByQuery(searchedWord)
-  .then(({ data: { hits } }) => {
-    createGallery(hits);
-  })
-
-  .catch(er => console.log(er));
