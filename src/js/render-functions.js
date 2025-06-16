@@ -13,6 +13,11 @@ export function clearGallery() {
   gallery.innerHTML = '';
 }
 const gallery = document.querySelector('.gallery');
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
+});
 export function createGallery(images) {
   const markUp = images
     .map(
@@ -42,11 +47,5 @@ export function createGallery(images) {
     )
     .join('');
   gallery.insertAdjacentHTML('beforeend', markUp);
-  const lightbox = new SimpleLightbox('.gallery a', {
-    captionsData: 'alt',
-    captionPosition: 'bottom',
-    captionDelay: 250,
-  });
-
   lightbox.refresh();
 }

@@ -11,5 +11,11 @@ export function getImagesByQuery(query) {
     lang: 'en',
   };
 
-  return axios(baseUrl, { params });
+  return axios(baseUrl, { params }).then(({ data }) => {
+    return data.hits;
+    console.log(data.hits);
+  });
 }
+getImagesByQuery('cat').then(resp => {
+  console.log(resp);
+});

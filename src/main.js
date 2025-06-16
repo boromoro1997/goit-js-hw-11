@@ -17,10 +17,18 @@ function searchSubmit(e) {
   showLoader();
   clearGallery();
   const searchedWord = form.elements['search-text'].value.trim();
-  console.log(searchedWord);
+  if (searchedWord.trim() === '') {
+    form.reset();
+    hideLoader();
+    return iziToast.show({
+      message: '❌ you must write something!!',
+      backgroundColor: 'red',
+      position: 'topRight',
+    });
+  }
   getImagesByQuery(searchedWord)
-    .then(({ data: { hits } }) => {
-      if (hits.length === 0) {
+    .then(resp => {
+      if (resp.length === 0) {
         return iziToast.show({
           message:
             '❌ Sorry, there are no images matching your search query. Please try again!',
@@ -28,10 +36,15 @@ function searchSubmit(e) {
           position: 'topRight',
         });
       }
-      createGallery(hits);
+      createGallery(resp);
     })
-    .catch(er => console.log(er))
+    .catch(er =>
+      iziToast.show({
+        message: `Server error : ${er}`,
+      })
+    )
     .finally(() => {
       hideLoader();
+      form.reset();
     });
 }
